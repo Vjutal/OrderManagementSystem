@@ -1,0 +1,58 @@
+@OrderService_HostAddress = http://localhost:5265
+
+GET {{OrderService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+### Get all orders
+GET {{OrderService_HostAddress}}/orders
+Accept: application/json
+
+### Get all orders. Version 3
+GET {{OrderService_HostAddress}}/v1/orders
+Accept: application/json
+
+
+### Get a specific order by ID
+GET {{OrderService_HostAddress}}/orders/1
+Accept: application/json
+
+### Create a new order
+POST {{OrderService_HostAddress}}/orders
+Content-Type: application/json
+
+{
+  "productName": "Laptop",
+  "quantity": 2,
+  "price": 1500.00,
+  "orderDate": "2024-08-12T00:00:00Z"
+}
+
+### Create a new order. Validation error
+POST {{OrderService_HostAddress}}/orders
+Content-Type: application/json
+
+{
+  "productName": "1",
+  "quantity": -2,
+  "price": 1500.00
+}
+
+### Update an existing order by ID
+PUT {{OrderService_HostAddress}}/orders/1
+Content-Type: application/json
+
+{
+  "productName": "Gaming Laptop",
+  "quantity": 1,
+  "price": 2000.00,
+  "orderDate": "2024-08-12T00:00:00Z"
+}
+
+### Delete an order by ID
+DELETE {{OrderService_HostAddress}}/orders/1
+
+### Health Check - Liveness
+GET {{OrderService_HostAddress}}/health/live
+
+### Health Check - Readiness
+GET {{OrderService_HostAddress}}/health/ready

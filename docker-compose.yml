@@ -1,0 +1,39 @@
+﻿version: '3.8'
+
+services:
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  postgres:
+    image: "postgres"
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "microservicesdb"
+    ports:
+      - "5432:5432"
+
+  userservice:
+    build: ./UserService
+    ports:
+      - "5001:8080"
+    depends_on:
+      - postgres
+
+  orderservice:
+    build: ./OrderService
+    ports:
+      - "5002:8080"
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  notificationservice:
+    build: ./NotificationService
+    ports:
+      - "5003:8080"
+    depends_on:
+      - rabbitmq
