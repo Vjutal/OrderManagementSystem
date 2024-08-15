@@ -51,8 +51,8 @@ To run this project locally, you need to have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/microservices-project.git
-cd microservices-project
+git clone https://github.com/Vjutal/OrderManagementSystem.git
+cd OrderManagementSystem
 ```
 
 ### 2. Build and Run the Application with Docker Compose
@@ -71,12 +71,13 @@ This command will:
 ### 3. Access the Services
 Once the services are running, you can access them at the following endpoints:
 
-**OrderService**: ``http://localhost:8081``
-**UserService**: ``http://localhost:8082``
+**OrderService**: ``http://localhost:5002``
+**UserService**: ``http://localhost:5001``
 **RabbitMQ Management UI**: ``http://localhost:15672`` (default username: guest, password: guest)
 
 ### 4. Running Database Migrations
-If you need to apply database migrations, you can do so using the Entity Framework Core CLI:
+Migration happens automatically, while service starting.
+If you need to apply database migrations manually, you can do so using the Entity Framework Core CLI:
 
 ```bash
 docker-compose exec orderservice dotnet ef database update
@@ -84,16 +85,25 @@ docker-compose exec userservice dotnet ef database update
 ```
 
 ### 5. Testing the Services
+Services requre Authorization so first Beare Token should be received. It could be received using this request:
+```bash
+curl -X POST http://localhost:5002/auth/login -H "Content-Type: application/json" -d '{"username": "username", "password": "password"}'
+```
+In response you will be able to find a Token.
+This Token should be added into requests to **Create**, **Update** and **Delete** ``Order``.
+
 You can test the services using tools like Postman or cURL. Here are some example requests:
 
  - Create a New Order:
 ```bash
-curl -X POST http://localhost:8081/orders -H "Content-Type: application/json" -d '{"ProductName": "Product1", "Quantity": 2, "Price": 50.00}'
+curl -X POST http://localhost:5002/orders -H "Content-Type: application/json" -H "Authorization: Bearer put_your_Token_here" -d '{"ProductName": "Product1", "Quantity": 2, "Price": 50.00}'
 ```
+
+User service doesn't requre authorization.
 
  - Create a New User:
 ```bash
-curl -X POST http://localhost:8082/users -H "Content-Type: application/json" -d '{"FirstName": "John", "LastName": "Doe", "Email": "john.doe@example.com"}'
+curl -X POST http://localhost:5001/users -H "Content-Type: application/json" -d '{"FirstName": "John", "LastName": "Doe", "Email": "john.doe@example.com"}'
 
 ```
 
@@ -108,7 +118,7 @@ This command stops and removes all the containers, networks, and volumes created
  - **OrderService/**: Contains the source code for the ``OrderService``.
  - **UserService/**: Contains the source code for the ``UserService``.
  - **NotificationService/**: Contains the source code for the ``NotificationService``.
- - **Shared/**: Contains shared code and libraries used by multiple services.
+ - **Shared/**: Contains shared code and libraries used by multiple services. To be removed. Temporary solution that is Obsolete.
  - **docker-compose.yml**: Docker Compose file to set up and run the services.
 
 ## Configuration
