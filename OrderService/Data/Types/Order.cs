@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Models;
+namespace OrderService.Data.Types;
 
 public record Order
 {
@@ -15,5 +15,10 @@ public record Order
     
     [Range(0.01, double.MaxValue)]
     public decimal Price { get; set; }
+    
     public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+    
+    public DateTime? UpdatedAt { get; set; }
+    
+    public bool IsDeleted { get; set; }
 }
