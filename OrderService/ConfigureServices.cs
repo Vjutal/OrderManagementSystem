@@ -1,9 +1,11 @@
 ﻿using Asp.Versioning;
+using Contracts;
 using FluentValidation;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OrderService.Authentication.Services;
+using RabbitMQ.Client;
 using Serilog;
 
 namespace OrderService;
@@ -118,9 +120,16 @@ public static class ConfigureServices
         
                 cfg.ReceiveEndpoint("order_queue", e =>
                 {
+                    e.ConfigureConsumeTopology = false;
+                    
                     e.Durable = true;
                     e.Exclusive = false;
                     e.AutoDelete = false;
+                    
+                    e.Bind("order_topic", s =>
+                    {
+                        s.ExchangeType = ExchangeType.Direct;
+                    });
                 });
         
                 cfg.ConfigureEndpoints(context);

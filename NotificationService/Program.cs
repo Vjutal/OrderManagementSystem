@@ -1,3 +1,4 @@
+using Contracts;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -127,7 +128,7 @@ public class NotificationConsumer : IConsumer<Notification>
     }
 }
 
-public class OrderConsumer : IConsumer<Order>
+public class OrderConsumer : IConsumer<OrderCreated>, IConsumer<OrderUpdated>
 {
     private readonly NotificationDbContext _context;
     private readonly ILogger<Order> _logger;
@@ -138,7 +139,7 @@ public class OrderConsumer : IConsumer<Order>
         _logger = logger;
     }
 
-    public async Task Consume(ConsumeContext<Order> context)
+    public async Task Consume(ConsumeContext<OrderCreated> context)
     {
         var order = context.Message;
         
@@ -148,7 +149,30 @@ public class OrderConsumer : IConsumer<Order>
         {
             CreatedAt = DateTime.UtcNow,
             Id = Guid.NewGuid(),
-            Message = $"Order {order.Id} has been created for product {order.ProductName} at {order.OrderDate}. Q:{order.Quantity}. P:{order.Price}"
+            Message = $"Order {order.Id} has been created"
+        };
+
+        _logger.LogInformation("Notification sent for order: {OrderId}", order.Id);
+
+        // Save notification to the database
+        _context.Notifications.Add(notification);
+        await _context.SaveChangesAsync();
+
+        // Mock sending notification (e.g., sending an email or push notification)
+        _logger.LogInformation("Notification sent: {Message}", notification.Message);
+    }
+
+    public async Task Consume(ConsumeContext<OrderUpdated> context)
+    {
+        var order = context.Message;
+        
+        _logger.LogInformation("Received order: {OrderId}", order.Id);
+        
+        var notification = new Notification
+        {
+            CreatedAt = DateTime.UtcNow,
+            Id = Guid.NewGuid(),
+            Message = $"Order {order.Id} has been updated"
         };
 
         _logger.LogInformation("Notification sent for order: {OrderId}", order.Id);

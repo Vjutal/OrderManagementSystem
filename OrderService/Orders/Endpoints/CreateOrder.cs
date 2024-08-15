@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Contracts;
+using FluentValidation;
 using MassTransit;
 using Microsoft.AspNetCore.Http.HttpResults;
 using OrderService.Common.Api;
@@ -56,7 +57,7 @@ public class CreateOrder : IEndpoint
         db.Orders.Add(order);
         await db.SaveChangesAsync(cancellationToken);
 
-        await publishEndpoint.Publish(order, cancellationToken);
+        await publishEndpoint.Publish(new OrderCreated { Id = order.Id}, cancellationToken);
 
         Log.Information("Order created with ID: {OrderId} and published to RabbitMQ", order.Id);
 

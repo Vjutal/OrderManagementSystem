@@ -1,4 +1,4 @@
-@OrderService_HostAddress = http://localhost:5265
+@OrderService_HostAddress = http://localhost:5002
 
 GET {{OrderService_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -19,6 +19,7 @@ Accept: application/json
 ### Create a new order
 POST {{OrderService_HostAddress}}/orders
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InNvbWUtdXNlci1pZCIsImV4cCI6MTc1NTI1OTY4OH0.pE7WYhvdduRdOianXMU592hSUpBDmTwRdyqhz34izZA
 
 {
   "productName": "Laptop",
@@ -30,11 +31,12 @@ Content-Type: application/json
 ### Create a new order. Validation error
 POST {{OrderService_HostAddress}}/orders
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6InNvbWUtdXNlci1pZCIsImV4cCI6MTc1NTI1OTY4OH0.pE7WYhvdduRdOianXMU592hSUpBDmTwRdyqhz34izZA
 
 {
-  "productName": "1",
+  "productName": "2",
   "quantity": -2,
-  "price": 1500.00
+  "price": 1500.99
 }
 
 ### Update an existing order by ID
@@ -56,3 +58,12 @@ GET {{OrderService_HostAddress}}/health/live
 
 ### Health Check - Readiness
 GET {{OrderService_HostAddress}}/health/ready
+
+### Auth get token
+POST {{OrderService_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "username",
+  "password": "password"
+}

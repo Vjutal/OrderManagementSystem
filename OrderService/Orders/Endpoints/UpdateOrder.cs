@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+﻿using Contracts;
 using FluentValidation;
 using MassTransit;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -56,10 +56,8 @@ public class UpdateOrder : IEndpoint
         post.UpdatedAt = DateTime.UtcNow;
         await database.SaveChangesAsync(cancellationToken);
 
-        await publishEndpoint.Publish(new OrderUpdated(post.Id), cancellationToken);
+        await publishEndpoint.Publish(new OrderUpdated {Id = post.Id}, cancellationToken);
         
         return TypedResults.NoContent();
     }
-
-    public sealed class OrderUpdated(int Id);
 }
