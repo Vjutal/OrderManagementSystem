@@ -15,25 +15,26 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AspNetCore.HealthChecks.Npgsql" Version="8.0.1" />
-      <PackageReference Include="AspNetCore.HealthChecks.RabbitMQ" Version="8.0.1" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        <PrivateAssets>all</PrivateAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.7" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
-      <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
-      <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
-      <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-      <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
-      <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+        <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
+        <PackageReference Include="AspNetCore.HealthChecks.Npgsql" Version="8.0.1" />
+        <PackageReference Include="AspNetCore.HealthChecks.RabbitMQ" Version="8.0.1" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.7" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
     </ItemGroup>
 
-    <ItemGroup>
+   <!-- <ItemGroup>
       <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
-
+-->
 </Project>

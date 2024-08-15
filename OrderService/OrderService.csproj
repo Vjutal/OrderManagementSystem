@@ -32,8 +32,8 @@
       <PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
     </ItemGroup>
 
-    <ItemGroup>
+    <!--<ItemGroup>
       <ProjectReference Include="..\Shared\Shared.csproj" />
-    </ItemGroup>
+    </ItemGroup>-->
 
 </Project>

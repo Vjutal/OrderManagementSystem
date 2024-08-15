@@ -10,7 +10,7 @@ services:
   postgres:
     image: "postgres"
     environment:
-      POSTGRES_USER: "user"
+      POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "password"
       POSTGRES_DB: "microservicesdb"
     ports:
@@ -22,6 +22,7 @@ services:
       - "5001:8080"
     depends_on:
       - postgres
+      - rabbitmq
 
   orderservice:
     build: ./OrderService
@@ -36,4 +37,5 @@ services:
     ports:
       - "5003:8080"
     depends_on:
+      - postgres
       - rabbitmq

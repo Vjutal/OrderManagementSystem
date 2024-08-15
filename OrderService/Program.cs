@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
 using Asp.Versioning;
 using FluentValidation;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Models;
 using RabbitMQ.Client;
 using Serilog;
 using Shared;
@@ -59,6 +59,8 @@ builder.Services.AddMassTransit(x =>
 {
     x.SetSnakeCaseEndpointNameFormatter();
     
+    // x.AddEndpoint<>();
+    
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host(builder.Configuration.GetConnectionString("RabbitMQConnection"));
@@ -81,7 +83,7 @@ app.UseGlobalExceptionHandler();
 
 /*
  Just ensure database is created.
- 
+ */
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
@@ -95,7 +97,7 @@ using (var scope = app.Services.CreateScope())
         Log.Fatal(ex, "Database migration failed.");
         throw;
     }
-}*/
+}
 
 // Enforce HTTPS
 app.UseHttpsRedirection();
@@ -202,22 +204,6 @@ catch (Exception ex)
 finally
 {
     Log.CloseAndFlush();
-}
-
-public record Order
-{
-    public int Id { get; set; }
-    
-    [Required]
-    [StringLength(100)]
-    public string ProductName { get; set; } = default!;
-    
-    [Range(1, 1000)]
-    public int Quantity { get; set; }
-    
-    [Range(0.01, double.MaxValue)]
-    public decimal Price { get; set; }
-    public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 }
 
 public class OrderDbContext : DbContext

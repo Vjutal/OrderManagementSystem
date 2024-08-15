@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -78,6 +79,21 @@ app.UseExceptionHandler(errorApp =>
         }
     });
 });
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+    try
+    {
+        db.Database.Migrate();
+        Log.Information("Database migrated successfully.");
+    }
+    catch (Exception ex)
+    {
+        Log.Fatal(ex, "Database migration failed.");
+        throw;
+    }
+}
 
 // Enforce HTTPS
 app.UseHttpsRedirection();
